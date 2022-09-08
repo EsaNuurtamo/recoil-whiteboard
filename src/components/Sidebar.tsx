@@ -1,28 +1,28 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import { useRecoilValue } from 'recoil'
 import { selectedElementState } from '../state'
 import { ElementDetails } from './ElementDetails'
 
+
+const sidebarStyle: CSSProperties = {
+  position: 'absolute',
+  backgroundColor: '#004452',
+  color: 'white',
+  right: 0,
+  top: 0,
+  paddingLeft: '12px',
+  paddingBottom: '12px',
+  height: '100%',
+  width: '338px',
+}
+
 export const Sidebar = () => {
   const elementId = useRecoilValue(selectedElementState)
-  if (!elementId) return null
   return (
     <div
-      style={{
-        position: 'absolute',
-        right: 0,
-        top: 0,
-        paddingLeft: '12px',
-        paddingBottom: '12px',
-        height: '100%',
-        borderLeft: '1px solid',
-        borderBottom: '1px solid',
-        width: '350px',
-      }}
+      style={sidebarStyle}
     >
-      <h4>Element id</h4>
-      <div>{elementId}</div>
-      <ElementDetails elementId={elementId} />
+      {elementId ? <ElementDetails elementId={elementId} /> : <h4>Select an element by clicking it</h4>}
     </div>
   )
 }

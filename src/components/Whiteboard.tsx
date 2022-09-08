@@ -1,15 +1,18 @@
 import { useCallback, useEffect } from 'react'
-import { useRecoilState } from 'recoil'
-import { elementListState } from '../state'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { elementListState, selectedElementState } from '../state'
 import { Element } from './Element'
 import { v4 as uuid } from 'uuid'
 
 export const Whiteboard = () => {
   const [elements, setElements] = useRecoilState(elementListState)
+  const setSelectedElement = useSetRecoilState(selectedElementState)
 
   const addElement = useCallback(() => {
-    setElements([...elements, uuid()])
-  }, [elements, setElements])
+    const id = uuid()
+    setElements([...elements, id])
+    setSelectedElement(id)
+  }, [elements, setElements, setSelectedElement])
 
   useEffect(() => {
     function dragOver(event: DragEvent) {
@@ -22,7 +25,19 @@ export const Whiteboard = () => {
 
   return (
     <>
-      <button style={{ position: 'absolute' }} onClick={addElement}>
+      <button 
+        style={{ 
+          position: 'absolute', 
+          backgroundColor: '#4CAF50',
+          border: 'none',
+          color: 'white',
+          padding: '15px 32px',
+          margin: '15px',
+          fontSize: '16px',
+          cursor: 'pointer'
+        }} 
+        onClick={addElement}
+      >
         Add new element
       </button>
       {elements.map((id) => (
